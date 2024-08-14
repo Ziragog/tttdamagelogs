@@ -509,8 +509,6 @@ if CLIENT then
 
     local function CheckWalls()
         for k, v in ipairs(jails) do
-
-
             if IsValid(v) then
                 v:SetCustomCollisionCheck(true)
                 v.jailWall = true
