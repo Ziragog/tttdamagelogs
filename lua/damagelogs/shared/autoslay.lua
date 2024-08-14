@@ -326,14 +326,12 @@ local function CreateCommand()
         function sAdmin.autoslayid(calling_ply, steamid, rounds, reason)
             if not sAdmin.isValidSteamID(steamid) then
                 sAdmin.msg(calling_ply, "%s is an invalid steamid.", steamid)
-
                 return
             end
 
             for _, v in ipairs(player.GetHumans()) do
                 if v:SteamID() == steamid then
                     sAdmin.autoslay(calling_ply, v, rounds, reason)
-
                     return
                 end
             end
@@ -343,7 +341,6 @@ local function CreateCommand()
 
         function sAdmin.cslay(calling_ply, target)
             local data = Damagelog.SQLiteDatabase.QuerySingle(string.format("SELECT * FROM damagelog_autoslay WHERE ply = %s", sql.SQLStr(target:SteamID())))
-
             if data then
                 sAdmin.msg(calling_ply, "%s has %s slays left with the reason: %s", target:Nick(), data.slays, data.reason)
             else
@@ -354,12 +351,10 @@ local function CreateCommand()
         function sAdmin.cslayid(calling_ply, steamid)
             if not sAdmin.isValidSteamID(steamid) then
                 sAdmin.msg(calling_ply, "%s is an invalid steamid.", steamid)
-
                 return
             end
 
             local data = Damagelog.SQLiteDatabase.QuerySingle(string.format("SELECT * FROM damagelog_autoslay WHERE ply = %s", sql.SQLStr(steamid)))
-
             if data then
                 sAdmin.msg(calling_ply, "%s has %s slays left with the reason: %s", steamid, data.slays, data.reason)
             else
@@ -370,13 +365,10 @@ local function CreateCommand()
         sAdmin.addCommand({
             name = "aslay",
             category = "TTT Management",
-            inputs = {
-                {"player", "player_name"},
-                {"number", "rounds"},
-                {"text", "reason"}
-            },
+            inputs = {{"player", "player_name"}, {"number", "rounds"}, {"text", "reason"}},
             func = function(admin, args, silent)
                 if not args[1] then return end
+
                 local targets = sAdmin.getTargets("autoslay", admin, args[1], 1)
                 local rounds = tonumber(args[2]) or 1
                 local reason = args[3] or "Reason"
@@ -392,16 +384,14 @@ local function CreateCommand()
         sAdmin.addCommand({
             name = "aslayid",
             category = "TTT Management",
-            inputs = {
-                {"text", "steamid"},
-                {"number", "rounds"},
-                {"text", "reason"}
-            },
+            inputs = {{"text", "steamid"}, {"number", "rounds"}, {"text", "reason"}},
             func = function(admin, args, silent)
                 local steamid = args[1]
                 if not steamid then return end
+
                 local rounds = tonumber(args[2]) or 1
                 local reason = args[3] or "Reason"
+
                 Damagelog:SetSlays(admin, steamid, rounds, reason, false)
             end
         })
@@ -409,11 +399,10 @@ local function CreateCommand()
         sAdmin.addCommand({
             name = "removeslays",
             category = "TTT Management",
-            inputs = {
-                {"player", "player_name"}
-            },
+            inputs = {{"player", "player_name"}},
             func = function(admin, args, silent)
                 if not args[1] then return end
+
                 local targets = sAdmin.getTargets("removeslays", admin, args[1], 1)
 
                 for k, target in ipairs(targets) do
@@ -427,11 +416,10 @@ local function CreateCommand()
         sAdmin.addCommand({
             name = "cslay",
             category = "TTT Management",
-            inputs = {
-                {"player", "player_name"}
-            },
+            inputs = {{"player", "player_name"}},
             func = function(admin, args, silent)
                 if not args[1] then return end
+
                 local targets = sAdmin.getTargets("cslay", admin, args[1], 1)
 
                 for k, target in ipairs(targets) do
@@ -445,9 +433,7 @@ local function CreateCommand()
         sAdmin.addCommand({
             name = "cslayid",
             category = "TTT Management",
-            inputs = {
-                {"text", "steamid"}
-            },
+            inputs = {{"text", "steamid"}},
             func = function(admin, args, silent)
                 local steamid = args[1]
                 if not steamid then return end
@@ -520,8 +506,11 @@ if CLIENT then
         end
     end)
 
+
     local function CheckWalls()
         for k, v in ipairs(jails) do
+
+
             if IsValid(v) then
                 v:SetCustomCollisionCheck(true)
                 v.jailWall = true
