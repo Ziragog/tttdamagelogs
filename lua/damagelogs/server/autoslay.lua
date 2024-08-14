@@ -180,6 +180,13 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                     T = steamid
                 })
             end
+        elseif sAdmin then
+            if target then
+                sAdmin.msg(nil, "%s removed the %s of %s.", admin:Nick(), aslay and "autoslays" or "autojails", target:Nick())
+            else
+                sAdmin.msg(nil, "%s removed the %s of %s.", admin:Nick(), aslay and "autoslays" or "autojails", steamid)
+            end
+
         end
 
         NetworkSlays(steamid, 0)
@@ -226,6 +233,9 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                             A = list,
                             V_2 = reason
                         })
+                    elseif sAdmin then
+                        local action = aslay and "autoslain" or "autojailed"
+                        sAdmin.msg(nil, "%s was already %s %s time(s) by %s for %s.", target:Nick(), action, slays, list, reason)
                     end
                 else
                     if ulx then
@@ -244,6 +254,9 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                             A = list,
                             V_2 = reason
                         })
+                    elseif sAdmin then
+                        local action = aslay and "autoslain" or "autojailed"
+                        sAdmin.msg(nil, "%s was already %s %s time(s) by %s for %s.", steamid, action, slays, list, reason)
                     end
                 end
             else
@@ -282,6 +295,10 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                             V_4 = old_slays,
                             V_5 = list
                         })
+                    elseif sAdmin then
+                        local action = aslay and "autoslays" or "autojails"
+                        local verb = difference > 0 and "added" or "removed"
+                        sAdmin.msg(nil, "%s %s %s %s to %s (%s). They were previously %s %s time(s) by %s.", admin_nick, verb, math.abs(difference), action, target:Nick(), reason, action, old_slays, list)
                     end
                 else
                     if ulx then
@@ -304,6 +321,10 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                             V_4 = old_slays,
                             V_5 = list
                         })
+                    elseif sAdmin then
+                        local action = aslay and "autoslays" or "autojails"
+                        local verb = difference > 0 and "added" or "removed"
+                        sAdmin.msg(nil, "%s %s %s %s to %s (%s). They were previously %s %s time(s) by %s.", admin_nick, verb, math.abs(difference), action, steamid, reason, action, old_slays, list)
                     end
                 end
 
@@ -339,6 +360,8 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                         T = target:Nick(),
                         V_2 = reason
                     })
+                elseif sAdmin then
+                    sAdmin.msg(nil, "%s added %s %s to %s (%s).", admin_nick, slays, aslay and "autoslays" or "autojails", target:Nick(), reason)
                 end
             else
                 if ulx then
@@ -356,6 +379,8 @@ function Damagelog:SetSlays(admin, steamid, slays, reason, target)
                         T = steamid,
                         V_2 = reason
                     })
+                elseif sAdmin then
+                    sAdmin.msg(nil, "%s added %s %s to %s (%s).", admin_nick, slays, aslay and "autoslays" or "autojails", steamid, reason)
                 end
             end
 
