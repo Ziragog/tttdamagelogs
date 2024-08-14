@@ -506,7 +506,6 @@ if CLIENT then
         end
     end)
 
-
     local function CheckWalls()
         for k, v in ipairs(jails) do
             if IsValid(v) then
